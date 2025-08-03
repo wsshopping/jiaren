@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>配置</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link href="../bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/configView.css" rel="stylesheet">
+    <style>
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            /* height: 50vh; */
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            border-radius: 8px;
+        }
+        .close {
+            height: auto;
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 禁用页面滚动 */
+        .modal-open {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div>
+        <ul class="layui-nav layui-bg-gray">
+            <li class="layui-nav-item">
+                <a href="/home" style="text-decoration: none;display: flex;align-items: center;">
+                    <img src="../images/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                    服务管理
+                </a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/home" style="text-decoration: none;">首页</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/config" style="text-decoration: none;">配置</a>
+            </li>
+        </ul>
+    </div>
+    <div style="width: 100vw; height: 7.5vh"></div>
+
+    <!-- 配置容器 -->
+    <div class="config-container">
+        <div id="configForm"></div>
+    </div>
+
+    <!-- 模态框 -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="close" style="display: flex;flex-direction: row-reverse;">
+                <div style="width: 20px;">&times;</div>
+            </div>
+            <textarea id="modalTextarea" class="form-control config-textarea shadow-none" style="width: 95%;height: 10vh;"></textarea>
+            <div class="btn-group mt-3" style="display: flex;flex-direction: row-reverse;">
+                <div>
+                    <button id="modalSubmitBtn" class="btn btn-primary btn-submit text-white">提交</button>
+                    <button id="modalCancelBtn" class="btn btn-secondary text-white">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <script src="../layui/layui.js"></script>
+    <script src="../bootstrap-5.3.0-alpha1-dist/js/bootstrap.min.js"></script>
+    
+    <script>
+        const configFields = [
+            'users_prefix', 'users_index_num', 'users_pass', 'mail_name',
+            'mail_equip', 'mail_pet', 'War_pet', 'Ride_pet', 'equip_fly',
+            'vip_type', 'world_Team', 'world_chat'
+        ];
+        let fieldKey = ''; // 名称
+
+        // 初始化配置表单
+        function initConfigForm() {
+            const formContainer = document.getElementById('configForm');
+            
+            configFields.forEach((field,i) => {
+                const div = document.createElement('div');
+                div.className = 'config-item';
+                
+                let inputElement;
+                if (field === 'world_chat') {
+                    const inputType = (field === 'users_index_num' || field === 'vip_type') ? 'number' : 'text';
+                    // inputElement = `<textarea class="form-control config-textarea shadow-none" id="${field}" disabled style="flex: 1;"></textarea>`;
+                    inputElement = `<input type="${inputType}" class="form-control config-input shadow-none" id="${field}" disabled>`;
+                } else {
+                    const inputType = (field === 'users_index_num' || field === 'vip_type') ? 'number' : 'text';
+                    inputElement = `<input type="${inputType}" class="form-control config-input shadow-none" id="${field}" disabled>`;
+                }
+                
+                div.innerHTML = `
+                    <div class="" style="display: flex; align-items: center;width: 100%;">
+                        <label class="config-label">${field}:</label>
+                        ${inputElement}
+                        <div id="prompt" style="width: 20%;"></div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-edit text-white" data-field="${field}">
+                                <i class="bi bi-pencil"></i> 编辑
+                            </button>
+                            <button class="btn btn-primary btn-submit text-white" data-field="${field}" style="display: none;">
+                                <i class="bi bi-check2"></i> 提交
+                            </button>
+                        </div>
+                    </div>
+                    
+                `;
+                formContainer.appendChild(div);
+            });
+
+            loadConfigData();
+            
+            // 添加编辑按钮点击事件
+            formContainer.addEventListener('click', function(e) {
+                if (e.target.closest('.btn-edit')) {
+                    const editBtn = e.target.closest('.btn-edit');
+                    const field = editBtn.getAttribute('data-field');
+                    const configItem = editBtn.closest('.config-item');
+                    const input = configItem.querySelector('.config-input, .config-textarea');
+                    const submitBtn = configItem.querySelector('.btn-submit');
+                    
+                    // input.disabled = false;
+                    // submitBtn.disabled = false;
+                    input.focus();
+                    // configItem.style.backgroundColor = 'rgb(107 166 252 / 18%)';
+
+                    // Hide edit button and show submit button
+                    // editBtn.style.display = 'none';
+                    // submitBtn.style.display = 'inline-block';
+
+                    // Show modal and set textarea value
+                    const modal = document.getElementById('editModal');
+                    const modalTextarea = document.getElementById('modalTextarea');
+                    modalTextarea.value = input.value;
+                    modal.style.display = 'block';
+
+                    // Set fieldKey
+                    fieldKey = field;
+
+                    // Disable page scrolling
+                    document.body.classList.add('modal-open');
+                }
+                
+                if (e.target.closest('.btn-submit')) {
+                    const submitBtn = e.target.closest('.btn-submit');
+                    const field = submitBtn.getAttribute('data-field');
+                    const configItem = submitBtn.closest('.config-item');
+                    const input = configItem.querySelector('.config-input, .config-textarea');
+                    const value = input.value;
+                    
+                    $.ajax({
+                        url: '/api/updateConfig',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            field: field,
+                            value: value
+                        }),
+                        success: function(response) {
+                            layui.layer.msg('修改成功');
+                            input.disabled = true;
+                            submitBtn.disabled = true;
+                            configItem.style.backgroundColor = '#f8f9fa';
+
+                            // Show edit button and hide submit button
+                            const editBtn = configItem.querySelector('.btn-edit');
+                            editBtn.style.display = 'inline-block';
+                            submitBtn.style.display = 'none';
+                        },
+                        error: function(err) {
+                            layui.layer.msg('更新失败');
+                            console.error('更新失败:', err);
+                        }
+                    });
+                }
+            });
+
+            // 模态框关闭按钮点击事件
+            const closeBtn = document.getElementsByClassName('close')[0];
+            closeBtn.onclick = function() {
+                const modal = document.getElementById('editModal');
+                modal.style.display = 'none';
+
+                // Enable page scrolling
+                document.body.classList.remove('modal-open');
+            }
+
+            // 模态框取消按钮点击事件
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            modalCancelBtn.onclick = function() {
+                const modal = document.getElementById('editModal');
+                modal.style.display = 'none';
+
+                // Enable page scrolling
+                document.body.classList.remove('modal-open');
+            }
+
+            // 模态框提交按钮点击事件
+            const modalSubmitBtn = document.getElementById('modalSubmitBtn');
+            modalSubmitBtn.onclick = function() {
+                const modal = document.getElementById('editModal');
+                const modalTextarea = document.getElementById('modalTextarea');
+                const value = modalTextarea.value;
+                const input = document.getElementById(fieldKey);
+                
+                $.ajax({
+                    url: '/api/updateConfig',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        field: fieldKey,
+                        value: value
+                    }),
+                    success: function(response) {
+                        layui.layer.msg('修改成功');
+                        input.value = value;
+                        input.disabled = true;
+                        const submitBtn = document.querySelector(`.btn-submit[data-field="${fieldKey}"]`);
+                        submitBtn.disabled = true;
+                        const editBtn = document.querySelector(`.btn-edit[data-field="${fieldKey}"]`);
+                        editBtn.style.display = 'inline-block';
+                        submitBtn.style.display = 'none';
+                        modal.style.display = 'none';
+
+                        // Enable page scrolling
+                        document.body.classList.remove('modal-open');
+                    },
+                    error: function(err) {
+                        layui.layer.msg('更新失败');
+                        console.error('更新失败:', err);
+                    }
+                });
+            }
+        }
+
+        // 加载配置数据
+        function loadConfigData() {
+            $.ajax({
+                url: '/api/getConfig',
+                method: 'GET',
+                success: function(cfg) {
+                    console.log(cfg);
+                    
+                    configFields.forEach(field => {
+                        document.getElementById(field).value = cfg[field] || '';
+                    });
+                    document.querySelectorAll('#prompt').forEach((item,i) => {
+                        item.innerText = cfg.prompt[i] || '';
+                    })
+                },
+                error: function(err) {
+                    console.error('加载配置失败:', err);
+                    layui.layer.msg('加载配置失败', {icon: 2});
+                }
+            });
+        }
+
+        initConfigForm();
+    </script>
+</body>
+</html>

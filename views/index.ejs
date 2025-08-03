@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link href="../bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html {
+            overflow-y: scroll;
+        }
+
+        :root {
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        :root body {
+            position: absolute;
+        }
+        body {
+            width: 100vw;
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f4f8;
+            color: #32383d;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .connectItem {
+            margin-bottom: 15px;
+        }
+        .connectItemTitle, .connectItemContent {
+            font-size: 18px;
+        }
+        .layui-table td, .layui-table th {
+            height: 60px;
+        }
+        .layui-table-cell {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .layui-table-box {
+            background-color: #fff;
+            border-radius: 15px;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 1rem;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .card-text {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .createClientModalStyle{
+            top: 25vh;
+        }
+        @media (max-width: 768px) {
+            .col-md-6, .col-lg-3 {
+                width: 100%;
+            }
+            .btn-primary {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+        
+        .nav-link{
+            color: #fff;
+        }
+        .navbar-logo{
+            color: #fff;
+            margin-left: 40px;
+        }
+
+        .layui-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        .layui-nav-bar{
+            background-color: #1e9fff;
+        } 
+    </style>
+</head>
+<body>
+    <div>
+        <ul class="layui-nav layui-bg-gray">
+            <li class="layui-nav-item">
+                <a href="/home" style="text-decoration: none;display: flex;align-items: center;">
+                    <img src="../images/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                    服务管理
+                </a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/home" style="text-decoration: none;">首页</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/config" style="text-decoration: none;">配置</a>
+            </li>
+          </ul>
+    </div>
+    <div style="width: 100vw; height: 7.5vh"></div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8" style="width: 100%">
+                <!-- <div class="text-center mb-4">
+                    <h1>服务管理</h1>
+                </div> -->
+                <div class="d-grid gap-2 d-md-block mb-4">
+                    <button id="login" class="btn btn-primary">全体登录</button>
+                    <button id="logout" class="btn btn-primary">全体下线</button>
+                    <button id="exit" class="btn btn-primary">停止进程</button>
+                    <button id="XiangYao" class="btn btn-primary">全体降妖</button>
+                    <button id="createClient" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createClientModal">
+                        创建客户端
+                    </button>
+                    <button class="btn btn-primary loginListButton">列表登录</button>
+                </div>
+                <!-- 连接数量 -->
+                <div class="row">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <span>allConnect:&nbsp;</span>
+                                    <span class="card-text allConnect">0</span>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <span>connectAAA:&nbsp;</span>
+                                    <span class="card-text connectAAA">0</span>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <span>connectGs:&nbsp;</span>
+                                    <span class="card-text connectGs">0</span>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <span>lostConnect:&nbsp;</span>
+                                    <span class="card-text lostConnect">0</span>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div>
+                    <table id="ID-table-demo-data" class="layui-table" lay-skin="nob"></table>
+                    <script type="text/html" id="ID-table-demo-templet-user">
+                        <img src="{{= 'images/' + d.portrait + '.png'}}" alt="" style="width: 50px;height: auto">
+                    </script>
+                    <script type="text/html" id="ID-table-demo-templet-login-button">
+                        <button id="loginNum" class="btn btn-primary loginButton">登录账号</button>
+                        <span>&nbsp;</span>
+                        <button id="loginNum" class="btn btn-primary logoutButton">退出登录</button>
+                    </script>
+                    <script type="text/html" id="ID-table-demo-templet-aaa">
+                        {{=d.aaa}}
+                    </script>
+                </div>
+
+                <div style="height: 1.5vh"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="createClientModal" tabindex="-1" aria-labelledby="createClientModalLabel" aria-hidden="true">
+        <div class="modal-dialog createClientModalStyle">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createClientModalLabel">创建客户端&nbsp;</h5>
+                    <button type="button" class="btn-close" id="closeButton" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="number" id="clientCountInput" class="form-control" placeholder="请输入创建客户端数" value="">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="closeCreateClient" data-bs-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="confirmCreateClient">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../layui/layui.js"></script>
+    <script src="../bootstrap-5.3.0-alpha1-dist/js/bootstrap.min.js"></script>
+    <script>
+        let userDatas = []
+
+        // 登录接口
+        const login = document.getElementById('login');
+        login.addEventListener('click', () => {
+            // 使用 fetch API 调用服务器端的 API
+            fetch('/api/loginAllClient')
+                .then(response => {
+                    let data = response.json()
+                    data.then(res => {
+                        console.log(res)
+                        userDatas =res
+                        console.log('userDatas:',userDatas)
+                        tableInit(userDatas.userDatas)
+                    })
+                    // document.querySelector('#data').innerHTML = JSON.stringify(data)
+                    return data
+                })
+                .then(data => {
+                    console.log(data.result); // 输出 "Function called from app.js"
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        // 退出接口
+        const logout = document.getElementById('logout')
+        logout.addEventListener('click',() => {
+            // 使用 fetch API 调用服务器端的 API
+            fetch('/api/logoutAll')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result == undefined) return;
+                    console.log(data.result);
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        // 关闭进程
+        const Stop = document.getElementById('exit')
+        Stop.addEventListener('click',() => {
+            // 使用 fetch API 调用服务器端的 API
+            fetch('/api/exit')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.result);
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        // 全部降妖
+        const XiangYao = document.getElementById('XiangYao')
+        XiangYao.addEventListener('click',() => {
+            // 使用 fetch API 调用服务器端的 API
+            fetch('/api/allXiangYao')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.result);
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        // 获取机器人信息接口函数
+        function checkConnections() {
+            fetch('/api/checkConnections')
+                .then(response => {
+                    let data = response.json()
+                    data.then(res => {
+                        console.log(res)
+                        console.log('res:',res)
+                        document.querySelector('.allConnect').innerHTML = res.allConnect
+                        document.querySelector('.connectAAA').innerHTML = res.connectAAA
+                        document.querySelector('.connectGs').innerHTML = res.connectGs
+                        document.querySelector('.lostConnect').innerHTML = res.lostConnect
+                    })
+                    return data
+                })
+                .then(data => {
+                    console.log(data.result); // 输出 "Function called from app.js"
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        setInterval(()=>{
+            checkConnections()
+            // getUserDataListFn()
+            // tableInit(userDatas.userDatas)
+        },1000)
+        checkConnections()
+        getUserDataListFn()
+
+        function tableInit(v) {
+            layui.use('table', function() {
+                var table = layui.table;
+                // 已知数据渲染
+                var inst = table.render({
+                    elem: '#ID-table-demo-data',
+                    skin: 'nob',
+                    height: 450,
+                    cols: [[ //标题栏
+    //                     {field: 'portrait', title: '门派', width: 150,templet: '#ID-table-demo-templet-user'},
+                        {field: 'account', title: '账号', width: 200},
+                        {field: 'aaa', title: 'AAA连接状态', minWidth: 100, width: 300, templet: '#ID-table-demo-templet-aaa'},
+                        {field: 'gs', title: 'GS连接状态', minWidth: 100, width: 300, templet: '#ID-table-demo-templet-gs'},
+                        {field: 'index', title: '操作', minWidth: 250, width: 300, templet: '#ID-table-demo-templet-login-button'}
+
+                    ]],
+                    data: v,
+                    // data: [{ // 赋值已知数据
+                    //     "portrait": "10001",
+                    //     "name": "张三1",
+                    //     "gid": "男"
+                    // }]
+                });
+            });
+        }
+
+        function getUserDataListFn() {
+            fetch('/api/getUserDataList')
+                .then(response => {
+                    let data = response.json()
+                    data.then(res => {
+                        console.log(res)
+                        userDatas =res
+                        console.log('userDatas:',userDatas)
+                        tableInit(userDatas.userDatas)
+                        BindButton()
+                    })
+                    return data
+                })
+                .then(data => {
+                    if (data.result == undefined) return
+                    console.log(data.result); // 输出 "Function called from app.js"
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+
+        function BindButton() {
+            //绑定登录按钮
+            let buttonList = document.querySelectorAll('.loginButton');
+            for (let i = 0; i < buttonList.length; i++) {
+                buttonList[i].addEventListener('click', () => {
+                console.log(userDatas)
+                const jsonData = JSON.stringify(userDatas.userDatas[i])
+                console.log(jsonData)
+                // 发送请求
+                fetch('/api/createLoginClinet', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: jsonData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        getUserDataListFn()
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                })
+            }
+            //绑定退出登录按钮
+            let logoutButtonList = document.querySelectorAll('.logoutButton');
+            for (let i = 0; i < logoutButtonList.length; i++) {
+                logoutButtonList[i].addEventListener('click', () => {
+                    console.log(userDatas)
+                    const jsonData = JSON.stringify(userDatas.userDatas[i])
+                    console.log(jsonData)
+                    // 发送单个账号退出登录请求
+                    fetch('/api/logoutSingleAccount', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: jsonData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                            if (!data.success){
+                                alert("并未存在该客户端")
+                            }else {
+                                getUserDataListFn()
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                })
+            }
+        }
+
+        // 创建客户端按钮点击事件
+        const createClientButton = document.getElementById('createClient');
+        createClientButton.addEventListener('click', () => {
+            // 打开模态框
+            const modal = new bootstrap.Modal(document.getElementById('createClientModal'));
+            modal.show();
+
+        });
+
+        // 确认创建客户端按钮点击事件
+        const confirmCreateClientButton = document.getElementById('confirmCreateClient');
+        confirmCreateClientButton.addEventListener('click', () => {
+            const inputElement = document.getElementById('clientCountInput');
+            const inputValue = inputElement.value;
+            console.log("pppp")
+            fetch('/api/createLoginAllClinetNum', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ value: inputValue })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // 关闭模态框
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('createClientModal'));
+                    modal.hide();
+                    // 手动移除遮罩层
+                    const backdrop = document.querySelector('.modal-backdrop');
+                    if (backdrop) {
+                        backdrop.remove();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    
+        //关闭
+        const closeCreateClientButton = document.getElementById('closeCreateClient');
+        closeCreateClientButton.addEventListener('click', ()=>{
+            closeModel()
+        })
+
+        function closeModel() {
+            setTimeout(()=>{
+                // 关闭模态框
+                const backdrop = document.querySelector('.modal-backdrop');
+                console.log(backdrop);
+                if (backdrop) {
+                    backdrop.remove();
+                }
+            },10)
+        }
+        const closeButton = document.querySelector('#closeButton')
+        closeButton.addEventListener('click',()=>{
+            closeModel()
+        })
+
+        const loginListButton = document.querySelector('.loginListButton')
+        loginListButton.addEventListener('click',()=>{
+            fetch('/api/loginListClient', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ list: userDatas.userDatas })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => console.error('Error:', error));
+        })
+    </script>
+</body>
+</html>

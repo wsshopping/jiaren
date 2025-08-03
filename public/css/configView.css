@@ -1,0 +1,139 @@
+html {
+  overflow-y: scroll;
+}
+
+:root {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+:root body {
+  position: absolute;
+}
+
+body {
+  width: 100vw;
+  background-color: #f8f9fa;
+}
+.config-container {
+  max-width: 80%;
+  margin: 30px auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+.config-item {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+}
+.config-item:hover {
+  background-color: #e9ecef;
+}
+.config-label {
+  min-width: 140px;
+  font-weight: 500;
+  color: #495057;
+}
+.config-input {
+  flex: 1;
+  margin: 0 15px;
+}
+.config-input:disabled {
+  background-color: #fff;
+  cursor: not-allowed;
+}
+.config-textarea {
+  height: 20vh;
+  /* flex: 1; */
+  margin: 0 15px;
+  min-height: 100px;
+  resize: vertical;
+}
+.config-textarea:disabled {
+  background-color: #fff;
+  cursor: not-allowed;
+}
+.btn-group {
+  /* width: 10%; */
+  gap: 8px;
+}
+.btn {
+  padding: 6px 16px;
+  font-weight: 500;
+}
+.btn-edit {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+.btn-submit {
+  background-color: #198754;
+  border-color: #198754;
+}
+.btn:disabled {
+  opacity: 0.6;
+}
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  font-size: 1rem;
+  /* padding: 0.5rem 1rem; */
+}
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+@media (max-width: 768px) {
+  .col-md-6, .col-lg-3 {
+      width: 100%;
+  }
+  .btn-primary {
+      width: 100%;
+      margin-bottom: 10px;
+  }
+}
+.btn-group>.btn-group:not(:last-child)>.btn, .btn-group>.btn.dropdown-toggle-split:first-child, .btn-group>.btn:not(:last-child):not(.dropdown-toggle) {
+  border-radius: 8px;
+}
+.btn-group>.btn-group:not(:first-child)>.btn, .btn-group>.btn:nth-child(n+3), .btn-group>:not(.btn-check)+.btn {
+  border-radius: 8px;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.nav-link{
+  color: #fff;
+}
+.navbar-logo{
+  color: #fff;
+  margin-left: 40px;
+}
+
+.layui-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.layui-nav-bar{
+  background-color: #1e9fff;
+}

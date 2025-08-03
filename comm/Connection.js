@@ -233,12 +233,18 @@ Connection.prototype.sendCmd = function(cmd, data) {
 
   var idx = this.writeIndex;
   var ds = DataStream.create(this.writeBuf, idx, idx + MAX_PACKET_SIZE);
+  var a1 = this.getTimeMs()
+  var a2 = 100
+  var a3 = a1 + a2
+    
   ds.putChar(77); // 'M'
   ds.putChar(90); // 'Z'
   ds.putShort(0);
-  ds.putLong(this.getTimeMs());
+  ds.putLong(a1);
   ds.putShort(0);
-  ds.putShort(cmd);
+  ds.putShort(a2);
+  ds.putLong(a3);
+  ds.putLong(cmd + a1 -a2  -a3);
   cmdParser[cmd](ds, data);
   var len = ds.getPutLen();
 

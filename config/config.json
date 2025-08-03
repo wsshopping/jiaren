@@ -1,6 +1,6 @@
 {
   "users_prefix": "s2",
-  "users_index_num": "40",
+  "users_index_num": 4,
   "users_start": 1,
   "users_end": 1,
   "users_pass": "123456",

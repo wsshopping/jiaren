@@ -6,12 +6,11 @@ const adapter = new FileSync('./config/config.json');
 const db = low(adapter);
 
 module.exports = {
-  host: "1.12.228.178",
-  port: process.env.SERVER_PORT || 3001,
+  host: "192.168.0.1",
+  port: process.env.SERVER_PORT || 8001,
   http_port: process.env.HTTP_PORT || 3000,
-  dist: "万里长城",
+  dist: "仙逆",
   gsLines: ["万里长城1线", "万里长城2线", "万里长城3线", "万里长城4线", "万里长城5线", "万里长城6线"],
-  //gsLines: ["无敌内测区1线","无敌内测区2线","无敌内测区3线","无敌内测区4线","无敌内测区5线","无敌内测区6线"],103.8.69.21:3001
   gs: "sy_int_gs2",        // 不配置登录服务端，配置可登录插件
   isGMAccount: 0, // 测试账号是否具有GM权限
   logPath: "./log",

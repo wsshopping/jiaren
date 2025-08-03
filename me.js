@@ -1035,9 +1035,19 @@ Me.prototype.onStartCombat = function(msg, info) {
   this.inCombat = true;
 
   var me = this;
+  console.log("me.data.victim_id = " + me.data.victim_id)
+  console.log("me.data.id = " + me.data.id)
+  me.con.sendCmd('CMD_C_DO_ACTION', {
+    id : me.data.id ,
+    victim_id  : me.data.victim_id ,
+    action : 2 ,
+    para : 2 ,
+  });
+
   setTimeout(function() {
     me.con.sendCmd("CMD_C_END_ANIMATE", { ans: 0 });
   }, 1000);
+
 };
 
 // 战斗结束

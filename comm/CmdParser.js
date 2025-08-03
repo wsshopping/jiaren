@@ -138,6 +138,18 @@ p[no.CMD_RANDOM_NAME] = function(ds, data) {
     ds.putChar(data.gender);
 }
 
+p[no.CMD_C_DO_ACTION] = function(ds, data) {
+    ds.putLong(data.id);
+    ds.putLong(data.victim_id);
+    ds.putLong(data.action);
+    ds.putLong(data.para)
+    ds.putString(data.para1)
+    ds.putString(data.para2)
+    ds.putString(data.para3)
+    ds.putString(data.skill_talk)
+}
+
+
 p[no.CMD_C_END_ANIMATE] = function(ds, data) {
     ds.putLong(data.ans);
 }
@@ -328,7 +340,7 @@ p[no.CMD_SELECT_CURRENT_PET] = function(ds, data) {
 p[no.CMD_AUTO_FIGHT_SET_DATA] = function(ds, data) {
     ds.putLong(data.id)         // 对象id
     ds.putChar(2)               // 没蓝情况下，普攻还是补蓝
-    ds.putChar(1)               // 当前使用的自动战斗索引，1 表示使用组合自动战斗，0 表示使用普通自动战斗
+    ds.putChar(0)               // 当前使用的自动战斗索引，1 表示使用组合自动战斗，0 表示使用普通自动战斗
     ds.putChar(3)               // 普通自动战斗动作
     ds.putLong(501)             // 力破千钧
     ds.putShort(0)              // 组合自动战斗条数

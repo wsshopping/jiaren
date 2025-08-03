@@ -744,8 +744,12 @@ Instruction.prototype.autoEquipApply = function() {
 
         if (null == val.extra.equip_type)
         {
-            // 不需要装备
-            continue;
+            if ('铁爪' != val.name &&
+            '铜锤' != val.name &&
+            '驯兽诀' != val.name) {
+                // 不需要装备
+                continue;
+            }
         }
 
         if (6 == val.extra.equip_type)

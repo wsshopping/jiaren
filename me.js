@@ -2340,9 +2340,12 @@ Me.prototype.onPartyListEx = function(msg, info) {
     // 加入其中一个帮派
     var index = Math.floor(Math.random() * info.count);
     var party = info.partiesInfo[index];
-
+    
+    // 空值保护
+    var safePartyName = party.partyName || "";
+    
     this.con.sendCmd("CMD_REQUEST_JOIN", {
-      peer_name: party.partyName,
+      peer_name: safePartyName,
       id: 0,
       ask_type: "party_remote"
     });

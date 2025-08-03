@@ -183,6 +183,16 @@ DataStream.prototype.putShort = function(v) {
     this.putLen += 2;
     return true;
 }
+// DataStream.js 添加新方法
+DataStream.prototype.putInt = function(v) {
+    v = v || 0;
+    var idx = this.pos + this.putLen;
+    if (idx + 3 >= this.end) return false;
+
+    this.data.writeInt32BE(v, idx);  // 使用有符号整数
+    this.putLen += 4;
+    return true;
+}
 
 DataStream.prototype.putLong = function(v) {
     var idx = this.pos + this.putLen;

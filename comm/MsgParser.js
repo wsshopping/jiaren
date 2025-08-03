@@ -243,6 +243,13 @@ p[no.MSG_UPDATE] = function(data, ds) {
     buildFields(data, ds);
 }
 
+
+p[no.MSG_EXECUTE_LUA_CODE] = function(data, ds) {
+    ds.getLong();
+    data.code = ds.getString2();
+    ds.getChar();
+}
+
 p[no.MSG_ENTER_ROOM] = function(data, ds) {   
     data.map_name = ds.getString();
     data.room_show_name = ds.getString();

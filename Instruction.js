@@ -47,13 +47,13 @@ function Instruction(me) {
     this.setType(TYPE_ZHUXIAN);
     //setInterval(this.wabao.bind(this), 5000);
     //十秒
-    setInterval(this.onInterval0.bind(this), 10000);
+    //setInterval(this.onInterval0.bind(this), 10000);
     // 半分钟执行一次
     // setInterval(this.onInterval2.bind(this), 30000);
     // 半分钟执行一次
     setInterval(this.onInterval.bind(this), 30000);
     // 喊话定时
-    setInterval(this.onInterval3.bind(this), 30000);
+   // setInterval(this.onInterval3.bind(this), 30000);
     // setInterval(this.test.bind(this), 1000);
 }
 
@@ -184,6 +184,9 @@ Instruction.prototype.onInterval = function() {
     for (var taskType in this.me.taskData) {
         var val = this.me.taskData[taskType];
 
+        // console.log("可用任务字段:");
+        // console.log("- currentTask:", this.me.taskData[taskType]);
+
         if (val.refresh) {
             this.me.con.sendCmd('CMD_REFRESH_TASK_LOG', { name : taskType });
         }
@@ -309,6 +312,7 @@ Instruction.prototype.onTaskPromptCb = function() {
         }
 
     var data = this.me.taskData;
+
     if (this.type == TYPE_XIANGYAO) {
         // 降妖
         return this.onXiangyaoPrompt(data);
@@ -323,7 +327,6 @@ Instruction.prototype.onTaskPromptCb = function() {
 
     for (var taskType in data) {
         var val = data[taskType];
-
         if (this.type == TYPE_ZHUXIAN) {
             // 做主线
             switch (taskType)
@@ -781,11 +784,12 @@ Instruction.prototype.changeStateFSRM = function(data) {
     default:
         break;
     }
-
+    console.log("data.task_prompt   " + data.task_prompt)
     // 自动寻路
     this.me.autoWalk.beginAutoWalk(this.me.autoWalk.getDest(data.task_prompt));
     return true;
 }
+
 
 // 主线—拜入师门
 Instruction.prototype.changeStateBRSM = function(data) {

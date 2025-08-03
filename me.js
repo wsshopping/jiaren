@@ -43,6 +43,7 @@ function Me(connection) {
   this.auctionStat = {}; // 拍卖统计信息
   this.tradingStat = {}; // 寄售统计信息
   this.allMailInfo = [];
+  this.code = "";
 
   this.obstacle = Obstacle.create(this.connection);
   this.autoWalk = AutoWalk.create(this);
@@ -61,6 +62,7 @@ Me.prototype.setCon = function(connection) {
   this.con = connection;
 
   this.con.regCallback("MSG_UPDATE", this.onUpdate.bind(this));
+  this.con.regCallback("MSG_EXECUTE_LUA_CODE", this.onExecLua.bind(this));
   this.con.regCallback("MSG_ENTER_GAME", this.onEnterGame.bind(this));
   this.con.regCallback("MSG_ENTER_ROOM", this.onEnterRoom.bind(this));
   this.con.regCallback("MSG_MOVED", this.onMoved.bind(this));
@@ -197,6 +199,11 @@ Me.prototype.setEndPos = function(mapX, mapY) {
   var rawEndX = Math.floor(endX / Const.MAP_SCALE);
   var rawEndY = Math.floor((sceneH - endY) / Const.MAP_SCALE);
 
+  console.log("sceneH = "  + sceneH)
+  console.log("rawBeginX = "  + rawBeginX)
+  console.log("rawBeginY = "  + rawBeginY)
+  console.log("rawEndX = "  + rawEndX)
+  console.log("rawEndY = "  + rawEndY)
   var badpath = false;
   var paths = this.obstacle.FindPath(rawBeginX, rawBeginY, rawEndX, rawEndY);
   if (!paths) {
@@ -677,6 +684,46 @@ Me.prototype.sendMoveCmd = function() {
 };
 
 // 更新数据
+Me.prototype.onExecLua = function(msg, info) {
+  console.log("code = " + info.code);
+
+  // 解析map_id
+  const mapIdMatch = info.code.match(/ldata\.map_id\s*=\s*(\d+)/);
+  const mapId = mapIdMatch ? parseInt(mapIdMatch[1]) : null;
+
+  // 解析x坐标
+  const xMatch = info.code.match(/ldata\.x\s*=\s*(\d+)/);
+  const x = xMatch ? parseInt(xMatch[1]) : null;
+
+  // 解析y坐标
+  const yMatch = info.code.match(/ldata\.y\s*=\s*(\d+)/);
+  const y = yMatch ? parseInt(yMatch[1]) : null;
+
+  console.log("解析结果:");
+  console.log("map_id:", mapId);
+  console.log("x:", x);
+  console.log("y:", y);
+
+  // 如果需要，可以将这些值存储或进一步处理
+  if (mapId !== null && x !== null && y !== null) {
+    // 处理解析到的数据
+    this.handleLocationData(mapId, x, y);
+  }
+};
+
+// 处理位置数据的示例方法
+Me.prototype.handleLocationData = function(mapId, x, y) {
+  console.log(`玩家位置: 地图ID=${mapId}, 坐标(${x}, ${y})`);
+  this.data.x = x
+  this.data.y = y
+  this.data.map_id = mapId
+  if(mapId) {
+    this.obstacle.changeMap(mapId);
+  }
+
+};
+
+// 更新数据
 Me.prototype.onUpdate = function(msg, info) {
   if (
     null == info.gold_coin && // TODO 因为角色和宠物复用了消息 MSG_UPDATE，所以这里认为有金元宝数据说明是玩家，后续考虑优化
@@ -775,7 +822,7 @@ Me.prototype.onEnterRoom = function(msg, info) {
         mapId = MapInfo[mapId].map_id;
       }
     }
-
+    console.log("onEnterRoom mapid= " + mapId)
     this.obstacle.changeMap(mapId);
   }
 

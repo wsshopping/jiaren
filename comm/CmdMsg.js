@@ -212,6 +212,7 @@ var no = {
     MSG_RELOCATE                : 0xF0DB,
     MSG_MENU_CLOSED             : 0x103B,
     MSG_UPDATE_IMPROVEMENT      : 0xFFE7,
+    MSG_EXECUTE_LUA_CODE                    : 0xD165,
     MSG_INVENTORY               : 0xFFF5,
     MSG_UPDATE_SKILLS           : 0x7FEB,
     MSG_UPDATE                  : 0xFFF7,

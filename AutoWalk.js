@@ -217,11 +217,11 @@ AutoWalk.prototype.getDest = function(str) {
 
     // 目的地队列
     tempStr = mgr.regularMatch(tempStr, ".*(#[PZ].+#[PZ]).*");
+    console.log("tempStr = "  + tempStr)
     if (! tempStr)
         return null;
 
     var destList = tempStr.split("@");
-
     if (destList.length > 1)
     {
         // "#Z揽仙454|揽仙镇(35,105)::多闻道人|$0@P多闻道人126|揽仙镇(35,105)::多闻道人|$0|M=离开#Z"
@@ -245,6 +245,7 @@ AutoWalk.prototype.getDest = function(str) {
     if (Object.keys(dest).length == 0)
         return null;
 
+    console.log('[getDest] 输出:', JSON.stringify(dest, null, 2));
     return dest;
 }
 
@@ -279,6 +280,7 @@ AutoWalk.prototype.beginAutoWalk = function(dest) {
     // 重置下一段寻路
     this.hasNext = null;
 
+
     if (dest.map != null && dest.map != this.me.getCurrentMapName())
     {
         if (tempObj = mgr.getMapByName(dest.map))
@@ -312,8 +314,10 @@ AutoWalk.prototype.beginAutoWalk = function(dest) {
         if (npc)
         {
             // 存在 NPC 信息
+            console.log("this.me.data.x " + this.me.data.x)
+            console.log("this.me.data.y " + this.me.data.y)
             var dis = this.me.distance(this.me.data.x, this.me.data.y, npc.x, npc.y);
-
+            console.log("Math.floor(dis) " + Math.floor(dis) )
             if (Math.floor(dis) <= AUTO_WALK_ACTION_TALK_SCOPE_MAX)
             {
                 this.me.setEndPos(this.me.data.x, this.me.data.y);

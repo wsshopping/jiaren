@@ -149,24 +149,47 @@ p[no.MSG_L_SERVER_LIST] = function(data, ds) {
         data['status' + i] = ds.getShort()
     }
 }
+//周年版本 要解密
+// p[no.MSG_L_AGENT_RESULT] = function(data, ds) {
+// 	let auth_key1 = ds.getShort();
+// 	data.result = ds.getLong();
+//     data.privilege = ds.getLong();
+//     data.ip = ds.getString();
+//     data.port = ds.getShort();
+//     data.seed = ds.getLong();
+// 	let key = ds.getShort();
+// 	key = key ^ 1;
+// 	data.serverName = ds.getString();
+// 	data.port = key ^ data.port;
+// 	auth_key1 = auth_key1.toString(16).padStart(4, '0');
+//     key = key.toString(16).padStart(4, '0');
+// 	let auth_key = auth_key1 + key;
+// 	data.authKey = parseInt(auth_key, 16);
+// 	data.serverStatus = ds.getChar();
+// 	data.msg = ds.getString();
+// }
+//
 
+//83Java不用解密
 p[no.MSG_L_AGENT_RESULT] = function(data, ds) {
-	let auth_key1 = ds.getShort();
-	data.result = ds.getLong();
+    let auth_key1 = ds.getShort();
+    data.result = ds.getLong();
     data.privilege = ds.getLong();
     data.ip = ds.getString();
     data.port = ds.getShort();
     data.seed = ds.getLong();
-	let key = ds.getShort();
-	key = key ^ 1;
-	data.serverName = ds.getString();
-	data.port = key ^ data.port;
-	auth_key1 = auth_key1.toString(16).padStart(4, '0');
-    key = key.toString(16).padStart(4, '0');	
-	let auth_key = auth_key1 + key;
-	data.authKey = parseInt(auth_key, 16);
-	data.serverStatus = ds.getChar();
-	data.msg = ds.getString();
+    let key = ds.getShort();
+    key = key ^ 1;
+    data.serverName = ds.getString();
+    data.port = key ^ data.port;
+    auth_key1 = auth_key1.toString(16).padStart(4, '0');
+    key = key.toString(16).padStart(4, '0');
+    let auth_key = auth_key1 + key;
+    data.authKey = parseInt(auth_key, 16);
+    data.serverStatus = ds.getChar();
+    data.msg = ds.getString();
+    data.result = "1"
+
 }
 
 p[no.MSG_ANSWER_FIELDS] = function(data, ds) {

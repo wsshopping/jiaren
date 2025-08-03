@@ -14,7 +14,7 @@ module.exports = {
   gs: "sy_int_gs2",        // 不配置登录服务端，配置可登录插件
   isGMAccount: 0, // 测试账号是否具有GM权限
   logPath: "./log",
-  enableTrace: 0,
+  enableTrace: 1,
   enableAutoTask: 1,   //自动任务，1开0关
   delayAutoTask: 5000,
   debugOn: 1,  // 输出日志，1开0关

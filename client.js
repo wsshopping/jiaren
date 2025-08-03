@@ -463,6 +463,7 @@ Client.prototype.onServerList = function(msg, data) {
   });
 };
 
+
 Client.prototype.onAgentResult = function(msg, data) {
   this.seed = data.seed;
   this.authKey = data.authKey;

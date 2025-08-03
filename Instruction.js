@@ -184,8 +184,8 @@ Instruction.prototype.onInterval = function() {
     for (var taskType in this.me.taskData) {
         var val = this.me.taskData[taskType];
 
-        // console.log("可用任务字段:");
-        // console.log("- currentTask:", this.me.taskData[taskType]);
+         console.log("可用任务字段:");
+         console.log("- currentTask:", this.me.taskData[taskType]);
 
         if (val.refresh) {
             this.me.con.sendCmd('CMD_REFRESH_TASK_LOG', { name : taskType });
@@ -730,7 +730,9 @@ Instruction.prototype.autoEquipApply = function() {
         if (! val ||
             val.pos < 41)
             continue;
-
+        console.log("val.name  .......... = " + val.name)
+        console.log("val.name  .......... = " + val.name)
+        console.log("val.extra.equip_type  .......... = " + val.extra.equip_type)
         if ('血池' == val.name ||
             '灵池' == val.name ||
             '驯兽诀' == val.name)
@@ -740,13 +742,13 @@ Instruction.prototype.autoEquipApply = function() {
             continue;
         }
 
-        if (null == val.equip_type)
+        if (null == val.extra.equip_type)
         {
             // 不需要装备
             continue;
         }
 
-        if (6 == val.equip_type)
+        if (6 == val.extra.equip_type)
         {
             // 首饰
             if (equipWrist) {
@@ -758,7 +760,7 @@ Instruction.prototype.autoEquipApply = function() {
             }
         } else {
             // 装备
-            this.me.con.sendCmd('CMD_EQUIP', { pos : val.pos, equip_part : val.equip_type });
+            this.me.con.sendCmd('CMD_EQUIP', { pos : val.pos, equip_part : val.extra.equip_type });
         }
     }
 }
@@ -769,11 +771,12 @@ Instruction.prototype.changeStateFSRM = function(data) {
         ! data.task_state ||
         '' == data.task_state)
         return false;
-
+    console.log("data.task_state : "  + data.task_state)
     switch (data.task_state)
     {
     case Const.TASK_STATE.S2:
         this.autoEquipApply();
+        console.log("autoEquipApply.autoEquipApply : "  + data.task_state)
         return true;
 
     case Const.TASK_STATE.S4:

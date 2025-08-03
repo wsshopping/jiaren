@@ -244,7 +244,7 @@ Connection.prototype.sendCmd = function(cmd, data) {
   ds.putShort(0);
   ds.putShort(a2);
   ds.putLong(a3);
-    if (this.debugOn) console.log("[a1]： " + a1 + "[a2]： " + a2 +"[a3]： " + a3+ "[cmd]： " + cmd + "[cmd + a1 -a2  -a3]： " + (cmd + a1 -a2  -a3));
+    //if (this.debugOn) console.log("[a1]： " + a1 + "[a2]： " + a2 +"[a3]： " + a3+ "[cmd]： " + cmd + "[cmd + a1 -a2  -a3]： " + (cmd + a1 -a2  -a3));
   ds.putInt(cmd + a1 -a2  -a3);
 
   cmdParser[cmd](ds, data);

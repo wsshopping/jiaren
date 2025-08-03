@@ -5,6 +5,7 @@
 var os      = require('os');
 var cfg     = require('./cfg.js');
 var GenNo   = require('./comm/GeneralNotify.js');
+
 var Const   = require('./Const.js');
 var mgr     = require('./mgr.js');
 var crypt   = require('crypto');

@@ -196,6 +196,7 @@ DataStream.prototype.putLong = function(v) {
 }
 
 DataStream.prototype.putString = function(v) {
+    v = v || ""; // 空值保护
     if (typeof(v) == 'string') {
         v = iconv.encode(v, "gbk");
     }

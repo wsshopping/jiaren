@@ -2241,6 +2241,10 @@ Me.prototype.onConfirmDlg = function(msg, info) {
 
 // 收到播放剧本
 Me.prototype.onPlayScenariod = function(msg, info) {
+  //如果完成了就直接返回
+  if(info.isComplete == 1){
+    return;
+  }
   // 直接跳过
   this.con.sendCmd("CMD_OPER_SCENARIOD", {
     id: this.data.id,
@@ -2668,3 +2672,4 @@ module.exports = {
     return new Me(client);
   }
 };
+
